@@ -1,33 +1,46 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UsePipes,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { StudantService } from './studant.service';
-import { CreateStudantDto } from './dto/create-studant.dto';
+import {
+  CreateStudantDto,
+  studantCreateSchema,
+} from './dto/create-studant.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import ZodPipeValidation from './global/pipes/zodTransform.pipe';
 
 @Controller('studant')
 export class StudantController {
   constructor(private readonly studantService: StudantService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Criar um novo aluno' })
-  @ApiResponse({ status: 201, description: 'Aluno criado com sucesso' })
-  create(@Body() createStudantDto: CreateStudantDto) {
-    return this.studantService.create(createStudantDto);
+  @ApiOperation({ summary: 'Create a new student' })
+  @ApiResponse({ status: 201, description: 'Successful student' })
+  @UsePipes(new ZodPipeValidation(studantCreateSchema))
+  async create(@Body() createStudantDto: CreateStudantDto) {
+    return await this.studantService.create(createStudantDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar todos os alunos' })
+  @ApiOperation({ summary: 'List all students' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de alunos retornada com sucesso',
+    description: 'List of students successfully returned',
   })
-  findAll() {
-    return this.studantService.findAll();
+  async findAll() {
+    return await this.studantService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Buscar um aluno por ID' })
-  @ApiResponse({ status: 200, description: 'Aluno encontrado com sucesso' })
-  findOne(@Param('id') id: string) {
-    return this.studantService.findOne(+id);
+  @ApiOperation({ summary: 'Search a student for id' })
+  @ApiResponse({ status: 200, description: 'Student found successfully' })
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.studantService.findOne(id);
   }
 }

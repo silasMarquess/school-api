@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+import PrismaExceptionErroClientRequest from './studant/global/filters/prismaExceptionFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,7 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, documentFactory());
 
+  app.useGlobalFilters(new PrismaExceptionErroClientRequest());
   await app.listen((process.env.APPLICATION_PORT as string) || 3000);
 }
 bootstrap();

@@ -1,11 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
+import z from 'zod';
+
+export const studantCreateSchema = z.object({
+  classId: z.string().uuid({ message: 'invalid uuid' }),
+  firstname: z.number().min(3, { message: 'at least 3 characters need' }),
+  surname: z.string().min(3, { message: 'at least 3 characters need' }),
+  email: z.string().email({ message: 'invalid email' }),
+});
 
 export class CreateStudantDto {
-  @ApiProperty({ example: '202309702321' })
-  tuition: number;
+  @ApiProperty()
+  classId: string;
 
   @ApiProperty({ example: 'Silas' })
-  name: string;
+  firstname: string;
+
+  @ApiProperty({ example: 'marques' })
+  surname: string;
 
   @ApiProperty({ example: 'silasmaques@outlook.com' })
   email: string;

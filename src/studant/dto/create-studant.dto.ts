@@ -3,7 +3,14 @@ import z from 'zod';
 
 export const studantCreateSchema = z.object({
   classId: z.string().uuid({ message: 'invalid uuid' }),
-  firstname: z.number().min(3, { message: 'at least 3 characters need' }),
+  firstname: z.string().min(3, { message: 'at least 3 characters need' }),
+  surname: z.string().min(3, { message: 'at least 3 characters need' }),
+  email: z.string().email({ message: 'invalid email' }),
+});
+
+export const studentUpdateSchema = z.object({
+  classId: z.string().uuid({ message: 'invalid uuid' }),
+  firstname: z.string().min(3, { message: 'at least 3 characters need' }),
   surname: z.string().min(3, { message: 'at least 3 characters need' }),
   email: z.string().email({ message: 'invalid email' }),
 });

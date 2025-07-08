@@ -28,6 +28,9 @@ export class StudantService {
       },
     });
     console.log(student);
+    if (!student) {
+      throw new Error('Student not found');
+    }
     return student;
   }
 
@@ -58,5 +61,14 @@ export class StudantService {
       },
     });
     return student;
+  }
+
+  async findStudentByClassId(classId: string) {
+    const students = await this.prismaService.student.findMany({
+      where: {
+        classId,
+      },
+    });
+    return students;
   }
 }

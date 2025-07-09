@@ -24,6 +24,6 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, documentFactory());
 
   app.useGlobalFilters(new PrismaExceptionErroClientRequest());
-  await app.listen((process.env.APPLICATION_PORT as string) || 3000);
+  await app.listen((process.env.PORT as string) || 8080, '0.0.0.0');
 }
 bootstrap();

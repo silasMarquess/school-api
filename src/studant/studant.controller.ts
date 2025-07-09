@@ -9,7 +9,7 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { StudantService } from './studant.service';
+import { StudantService } from '../prisma/studant.service';
 import {
   CreateStudantDto,
   studantCreateSchema,
